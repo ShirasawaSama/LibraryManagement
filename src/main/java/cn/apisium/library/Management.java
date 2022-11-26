@@ -11,6 +11,7 @@ import java.util.*;
 
 public class Management {
     private static final Long WEEK = 1000L * 60 * 60 * 24 * 7;
+    private static final String USERS_FILE = "USERS.csv", ITEMS_FILE = "ITEMS.csv", LOANS_FILES = "LOANS.csv";
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private static final CsvMapper mapper = new CsvMapper();
     private static final CsvSchema userSchema = mapper.schemaFor(User.class).withHeader();
@@ -18,24 +19,27 @@ public class Management {
     private static final CsvSchema loanSchema = mapper.schemaFor(Loan.class).withHeader();
     private final Map<String, User> users = new HashMap<>();
     private final Map<String, Item> items = new HashMap<>();
-    private final List<Loan> loans;
+    private final ArrayList<Loan> loans = new ArrayList<>();
 
     public Management() throws IOException {
-        try (MappingIterator<User> reader = mapper.readerFor(User.class).with(userSchema).readValues(new File("USERS.csv"))) {
+        var file = new File(USERS_FILE);
+        if (file.exists()) try (MappingIterator<User> reader = mapper.readerFor(User.class).with(userSchema).readValues(file)) {
             reader.readAll();
         }
-        try (MappingIterator<Item> reader = mapper.readerFor(Item.class).with(itemSchema).readValues(new File("ITEMS.csv"))) {
+        file = new File(ITEMS_FILE);
+        if (file.exists()) try (MappingIterator<Item> reader = mapper.readerFor(Item.class).with(itemSchema).readValues(file)) {
             reader.readAll().forEach(it -> items.put(it.getBarcode(), it));
         }
-        try (MappingIterator<Loan> reader = mapper.readerFor(Loan.class).with(loanSchema).readValues(new File("LOANS.csv"))) {
-            loans = new ArrayList<>(reader.readAll());
+        file = new File(LOANS_FILES);
+        if (file.exists()) try (MappingIterator<Loan> reader = mapper.readerFor(Loan.class).with(loanSchema).readValues(file)) {
+            loans.addAll(reader.readAll());
         }
     }
 
     public Management(List<User> users, List<Item> items, List<Loan> loans) {
         users.forEach(it -> this.users.put(it.getUserId(), it));
         items.forEach(it -> this.items.put(it.getBarcode(), it));
-        this.loans = new ArrayList<>(loans);
+        this.loans.addAll(loans);
     }
 
     public void createLoan(String barcode, String userId) throws IllegalArgumentException {
@@ -64,13 +68,13 @@ public class Management {
 
     public void save() {
         try {
-            try (var writer = mapper.writerFor(Loan.class).with(loanSchema).writeValues(new File("LOANS.csv"))) {
+            try (var writer = mapper.writerFor(Loan.class).with(loanSchema).writeValues(new File(USERS_FILE))) {
                 writer.writeAll(loans);
             }
-            try (var writer = mapper.writerFor(User.class).with(userSchema).writeValues(new File("USERS.csv"))) {
+            try (var writer = mapper.writerFor(User.class).with(userSchema).writeValues(new File(USERS_FILE))) {
                 writer.writeAll(users.values());
             }
-            try (var writer = mapper.writerFor(Item.class).with(itemSchema).writeValues(new File("ITEMS.csv"))) {
+            try (var writer = mapper.writerFor(Item.class).with(itemSchema).writeValues(new File(ITEMS_FILE))) {
                 writer.writeAll(items.values());
             }
         } catch (IOException e) {
