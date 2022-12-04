@@ -6,8 +6,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.Objects;
 import java.util.Scanner;
 
+/**
+ * 图书条目
+ */
 @JsonPropertyOrder({ "barcode", "author", "title", "type", "year", "isbn" })
-public class Item {
+public final class Item {
     @JsonProperty("Barcode")
     private String barcode;
     @JsonProperty("Author/Artist")

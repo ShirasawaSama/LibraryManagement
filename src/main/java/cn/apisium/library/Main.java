@@ -2,8 +2,17 @@ package cn.apisium.library;
 
 import java.util.Scanner;
 
-public class Main {
-
+/**
+ * @author Shirasawa
+ * @version 0.0.0
+ * @see <a href="https://github.com/ShirasawaSama/LibraryManagement.git">https://github.com/ShirasawaSama/LibraryManagement.git</a>
+ *
+ * 程序主入口
+ */
+public final class Main {
+    /**
+     * 程序主入口点
+     */
     public static void main(String[] args) {
         Management management = null;
         try {

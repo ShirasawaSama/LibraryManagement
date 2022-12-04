@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Management {
+/**
+ * 图书馆管理系统
+ */
+public final class Management {
     private static final Long WEEK = 1000L * 60 * 60 * 24 * 7;
     private static final String USERS_FILE = "USERS.csv", ITEMS_FILE = "ITEMS.csv", LOANS_FILES = "LOANS.csv";
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -21,6 +24,9 @@ public class Management {
     private final Map<String, Item> items = new HashMap<>();
     private final ArrayList<Loan> loans = new ArrayList<>();
 
+    /**
+     * 从文件中读取数据
+     */
     public Management() throws IOException {
         var file = new File(USERS_FILE);
         if (file.exists()) try (MappingIterator<User> reader = mapper.readerFor(User.class).with(userSchema).readValues(file)) {
@@ -36,12 +42,25 @@ public class Management {
         }
     }
 
+    /**
+     * 从现成的数据创建
+     *
+     * @param users 用户列表
+     * @param items 图书列表
+     * @param loans 借书列表
+     */
     public Management(List<User> users, List<Item> items, List<Loan> loans) {
         users.forEach(it -> this.users.put(it.getUserId(), it));
         items.forEach(it -> this.items.put(it.getBarcode(), it));
         this.loans.addAll(loans);
     }
 
+    /**
+     * 创建借书条目
+     * @param barcode 条形码
+     * @param userId 用户 ID
+     * @throws IllegalArgumentException 如果用户不存在或图书不存在
+     */
     public void createLoan(String barcode, String userId) throws IllegalArgumentException {
         checkBarcodeAndUserId(barcode, userId);
         final Item item = items.get(barcode);
@@ -54,6 +73,12 @@ public class Management {
         loans.add(loan);
     }
 
+    /**
+     * 延期借书时间
+     * @param barcode 条形码
+     * @param userId 用户 ID
+     * @throws IllegalArgumentException 如果用户不存在或图书不存在
+     */
     public void renewLoan(String barcode, String userId) throws IllegalArgumentException {
         final Loan loan = getLoan(barcode, userId);
         if (loan.getNumRenews() >= 3) throw new IllegalArgumentException("Cannot renew more than 3 times!");
@@ -62,10 +87,19 @@ public class Management {
         loan.setNumRenews(loan.getNumRenews() + 1);
     }
 
+    /**
+     * 归还图书
+     * @param barcode 条形码
+     * @param userId 用户 ID
+     * @throws IllegalArgumentException 如果用户不存在或图书不存在
+     */
     public void returnItem(String barcode, String userId) throws IllegalArgumentException {
         loans.remove(getLoan(barcode, userId));
     }
 
+    /**
+     * 保存数据
+     */
     public void save() {
         try {
             try (var writer = mapper.writerFor(Loan.class).with(loanSchema).writeValues(new File(USERS_FILE))) {
@@ -82,44 +116,84 @@ public class Management {
         }
     }
 
+    /**
+     * 获取用户
+     * @param userId 用户 ID
+     * @return 用户
+     */
     public User getUser(String userId) {
         return users.get(userId);
     }
 
+    /**
+     * 获取图书
+     * @param barcode 条形码
+     * @return 图书
+     */
     public Item getItem(String barcode) {
         return items.get(barcode);
     }
 
+    /**
+     * 获取全部借书记录
+     * @return 借书记录
+     */
     public List<Loan> getLoans() {
         return Collections.unmodifiableList(loans);
     }
 
+    /**
+     * 添加用户
+     * @param user 用户
+     */
     public void addUser(User user) {
         users.put(user.getUserId(), user);
     }
 
+    /**
+     * 移除用户
+     * @param userId 用户 ID
+     */
     public void removeUser(String userId) {
         if (users.remove(userId) == null) throw new IllegalArgumentException("No such user!");
     }
 
+    /**
+     * 添加图书
+     * @param item 图书
+     */
     public void addItem(Item item) {
         items.put(item.getBarcode(), item);
     }
 
+    /**
+     * 移除图书
+     * @param barcode 条形码
+     * @throws IllegalArgumentException 如果图书不存在
+     */
     public void removeItem(String barcode) throws IllegalArgumentException {
         if (items.remove(barcode) == null) throw new IllegalArgumentException("No such item!");
     }
 
+    /**
+     * 显示全部的图书条目
+     */
     public void viewItems() {
         System.out.println("Items:");
         items.values().forEach(System.out::println);
     }
 
+    /**
+     * 显示全部的借书条目
+     */
     public void viewLoans() {
         System.out.println("Loans:");
         loans.forEach(System.out::println);
     }
 
+    /**
+     * 显示全部的用户
+     */
     public void viewUsers() {
         System.out.println("Users:");
         users.values().forEach(System.out::println);

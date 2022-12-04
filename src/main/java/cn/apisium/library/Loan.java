@@ -5,8 +5,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.Objects;
 
+/**
+ * 借书条目
+ */
 @JsonPropertyOrder({ "barcode", "userId", "issueDate", "dueDate", "numRenews" })
-public class Loan {
+public final class Loan {
     @JsonProperty("Barcode")
     private String barcode;
     @JsonProperty("User_id")

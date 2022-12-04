@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.Objects;
 import java.util.Scanner;
 
+/**
+ * 用户条目
+ */
 @JsonPropertyOrder({ "userId", "firstName", "lastName", "email" })
 public final class User {
     @JsonProperty("User_id")
