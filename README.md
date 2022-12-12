@@ -18,6 +18,12 @@ gradlew shadowJar
 java -jar build/libs/LibraryManagement-1.0-SNAPSHOT.jar
 ```
 
+## Run test cases
+
+```bash
+gradlew test
+```
+
 ## License
 
 [MIT](./LICENSE)
