@@ -1,5 +1,6 @@
 package cn.apisium.library;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -102,6 +103,7 @@ public sealed class Item permits Book, Multimedia {
         this.isbn = isbn;
     }
 
+    @JsonIgnore
     public boolean isBook() {
         return type.equals("Book");
     }
