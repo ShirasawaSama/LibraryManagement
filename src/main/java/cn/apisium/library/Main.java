@@ -7,7 +7,7 @@ import java.util.Scanner;
  * @version 0.0.0
  * @see <a href="https://github.com/ShirasawaSama/LibraryManagement.git">https://github.com/ShirasawaSama/LibraryManagement.git</a>
  *
- * 程序主入口
+ * 程序入口
  */
 public final class Main {
     /**

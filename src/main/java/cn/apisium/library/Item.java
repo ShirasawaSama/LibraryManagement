@@ -10,7 +10,7 @@ import java.util.Scanner;
  * 图书条目
  */
 @JsonPropertyOrder({ "barcode", "author", "title", "type", "year", "isbn" })
-public final class Item {
+public sealed class Item permits Book, Multimedia {
     @JsonProperty("Barcode")
     private String barcode;
     @JsonProperty("Author/Artist")
@@ -39,6 +39,15 @@ public final class Item {
         setYear(in.nextLine());
         System.out.print("ISBN: ");
         setIsbn(in.nextLine());
+    }
+
+    protected Item(Item other) {
+        this.barcode = other.barcode;
+        this.author = other.author;
+        this.title = other.title;
+        this.type = other.type;
+        this.year = other.year;
+        this.isbn = other.isbn;
     }
 
     public String getBarcode() {

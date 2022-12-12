@@ -30,11 +30,11 @@ public final class Management {
     public Management() throws IOException {
         var file = new File(USERS_FILE);
         if (file.exists()) try (MappingIterator<User> reader = mapper.readerFor(User.class).with(userSchema).readValues(file)) {
-            reader.readAll();
+            reader.readAll().forEach(it -> users.put(it.getUserId(), it));
         }
         file = new File(ITEMS_FILE);
         if (file.exists()) try (MappingIterator<Item> reader = mapper.readerFor(Item.class).with(itemSchema).readValues(file)) {
-            reader.readAll().forEach(it -> items.put(it.getBarcode(), it));
+            reader.readAll().forEach(it -> items.put(it.getBarcode(), it.isBook() ? new Book(it) : new Multimedia(it)));
         }
         file = new File(LOANS_FILES);
         if (file.exists()) try (MappingIterator<Loan> reader = mapper.readerFor(Loan.class).with(loanSchema).readValues(file)) {
