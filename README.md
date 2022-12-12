@@ -2,6 +2,10 @@
 
 Just a simple java homework.
 
+## Requirement
+
+- Java 18
+
 ## Usage
 
 ```bash
@@ -11,7 +15,7 @@ cd LibraryManagement
 
 gradlew shadowJar
 
-java -jar build/libs/LibraryManagement-1.0-SNAPSHOT-all.jar
+java -jar build/libs/LibraryManagement-1.0-SNAPSHOT.jar
 ```
 
 ## License
