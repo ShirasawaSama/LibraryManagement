@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.Objects;
 
 /**
- * 借书条目
+ * Loan items
  */
 @JsonPropertyOrder({ "barcode", "userId", "issueDate", "dueDate", "numRenews" })
 public final class Loan {

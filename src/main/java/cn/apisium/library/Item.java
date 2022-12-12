@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 /**
- * 图书条目
+ * Base item
  */
 @JsonPropertyOrder({ "barcode", "author", "title", "type", "year", "isbn" })
 public sealed class Item permits Book, Multimedia {

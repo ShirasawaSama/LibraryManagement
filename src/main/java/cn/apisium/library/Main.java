@@ -7,11 +7,11 @@ import java.util.Scanner;
  * @version 0.0.0
  * @see <a href="https://github.com/ShirasawaSama/LibraryManagement.git">https://github.com/ShirasawaSama/LibraryManagement.git</a>
  *
- * 程序入口
+ * Main entry point
  */
 public final class Main {
     /**
-     * 程序主入口点
+     * Main entry point
      */
     public static void main(String[] args) {
         Management management = null;

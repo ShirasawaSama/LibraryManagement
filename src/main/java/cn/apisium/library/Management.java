@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * 图书馆管理系统
+ * Library Management System
  */
 public final class Management {
     private static final Long WEEK = 1000L * 60 * 60 * 24 * 7;
@@ -25,7 +25,8 @@ public final class Management {
     private final ArrayList<Loan> loans = new ArrayList<>();
 
     /**
-     * 从文件中读取数据
+     * Read data from files
+     * @throws IOException if an I/O error occurs
      */
     public Management() throws IOException {
         var file = new File(USERS_FILE);
@@ -43,11 +44,11 @@ public final class Management {
     }
 
     /**
-     * 从现成的数据创建
+     * Create from existing data
      *
-     * @param users 用户列表
-     * @param items 图书列表
-     * @param loans 借书列表
+     * @param users users list
+     * @param items items list
+     * @param loans loans list
      */
     public Management(List<User> users, List<Item> items, List<Loan> loans) {
         users.forEach(it -> this.users.put(it.getUserId(), it));
@@ -56,10 +57,10 @@ public final class Management {
     }
 
     /**
-     * 创建借书条目
-     * @param barcode 条形码
-     * @param userId 用户 ID
-     * @throws IllegalArgumentException 如果用户不存在或图书不存在
+     * Create a new loan
+     * @param barcode item barcode
+     * @param userId user ID
+     * @throws IllegalArgumentException if the item is not found or the user is not found
      */
     public void createLoan(String barcode, String userId) throws IllegalArgumentException {
         checkBarcodeAndUserId(barcode, userId);
@@ -74,10 +75,10 @@ public final class Management {
     }
 
     /**
-     * 延期借书时间
-     * @param barcode 条形码
-     * @param userId 用户 ID
-     * @throws IllegalArgumentException 如果用户不存在或图书不存在
+     * Renew a loan
+     * @param barcode item barcode
+     * @param userId user ID
+     * @throws IllegalArgumentException if the item is not found or the user is not found
      */
     public void renewLoan(String barcode, String userId) throws IllegalArgumentException {
         final Loan loan = getLoan(barcode, userId);
@@ -88,17 +89,17 @@ public final class Management {
     }
 
     /**
-     * 归还图书
-     * @param barcode 条形码
-     * @param userId 用户 ID
-     * @throws IllegalArgumentException 如果用户不存在或图书不存在
+     * Return a loan
+     * @param barcode item barcode
+     * @param userId user ID
+     * @throws IllegalArgumentException if the item is not found or the user is not found
      */
     public void returnItem(String barcode, String userId) throws IllegalArgumentException {
         loans.remove(getLoan(barcode, userId));
     }
 
     /**
-     * 保存数据
+     * Save all data to files
      */
     public void save() {
         try {
@@ -117,66 +118,66 @@ public final class Management {
     }
 
     /**
-     * 获取用户
-     * @param userId 用户 ID
-     * @return 用户
+     * Get a user
+     * @param userId user ID
+     * @return user pojo
      */
     public User getUser(String userId) {
         return users.get(userId);
     }
 
     /**
-     * 获取图书
-     * @param barcode 条形码
-     * @return 图书
+     * Get an item
+     * @param barcode item barcode
+     * @return item pojo
      */
     public Item getItem(String barcode) {
         return items.get(barcode);
     }
 
     /**
-     * 获取全部借书记录
-     * @return 借书记录
+     * Get all loans
+     * @return loans
      */
     public List<Loan> getLoans() {
         return Collections.unmodifiableList(loans);
     }
 
     /**
-     * 添加用户
-     * @param user 用户
+     * Add a user
+     * @param user user
      */
     public void addUser(User user) {
         users.put(user.getUserId(), user);
     }
 
     /**
-     * 移除用户
-     * @param userId 用户 ID
+     * Remove a user
+     * @param userId user ID
      */
     public void removeUser(String userId) {
         if (users.remove(userId) == null) throw new IllegalArgumentException("No such user!");
     }
 
     /**
-     * 添加图书
-     * @param item 图书
+     * Add an item
+     * @param item item
      */
     public void addItem(Item item) {
         items.put(item.getBarcode(), item);
     }
 
     /**
-     * 移除图书
-     * @param barcode 条形码
-     * @throws IllegalArgumentException 如果图书不存在
+     * Remove an item
+     * @param barcode item barcode
+     * @throws IllegalArgumentException if the item is not found
      */
     public void removeItem(String barcode) throws IllegalArgumentException {
         if (items.remove(barcode) == null) throw new IllegalArgumentException("No such item!");
     }
 
     /**
-     * 显示全部的图书条目
+     * Show all items
      */
     public void viewItems() {
         System.out.println("Items:");
@@ -184,7 +185,7 @@ public final class Management {
     }
 
     /**
-     * 显示全部的借书条目
+     * Show all loans
      */
     public void viewLoans() {
         System.out.println("Loans:");
@@ -192,7 +193,7 @@ public final class Management {
     }
 
     /**
-     * 显示全部的用户
+     * Show all users
      */
     public void viewUsers() {
         System.out.println("Users:");

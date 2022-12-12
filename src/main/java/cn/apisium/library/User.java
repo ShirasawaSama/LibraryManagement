@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 /**
- * 用户条目
+ * User
  */
 @JsonPropertyOrder({ "userId", "firstName", "lastName", "email" })
 public final class User {
