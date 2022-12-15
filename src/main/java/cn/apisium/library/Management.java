@@ -103,7 +103,7 @@ public final class Management {
      */
     public void save() {
         try {
-            try (var writer = mapper.writerFor(Loan.class).with(loanSchema).writeValues(new File(USERS_FILE))) {
+            try (var writer = mapper.writerFor(Loan.class).with(loanSchema).writeValues(new File(LOANS_FILES))) {
                 writer.writeAll(loans);
             }
             try (var writer = mapper.writerFor(User.class).with(userSchema).writeValues(new File(USERS_FILE))) {
