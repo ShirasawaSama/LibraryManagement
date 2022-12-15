@@ -31,3 +31,5 @@ jar {
         attributes 'Main-Class': 'cn.apisium.library.Main'
     }
 }
+
+build.dependsOn(shadowJar)

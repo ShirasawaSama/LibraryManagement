@@ -108,6 +108,25 @@ public sealed class Item permits Book, Multimedia {
         return type.equals("Book");
     }
 
+    /**
+     * Get renew time
+     * Our teacher suggested using inheritance, so we redesigned simply.
+     * The following two methods are designed for future classes and overridden for following subclasses:
+     * @see Book
+     * @see Multimedia
+     *
+     * @return renew time in weeks
+     */
+    @JsonIgnore
+    public int getRenewTime() { return isBook() ? 2 : 1; }
+
+    /**
+     * Get borrow allowed time
+     * @return borrow allowed time in weeks
+     */
+    @JsonIgnore
+    public int getBorrowTime() { return isBook() ? 4 : 1; }
+
     @Override
     public String toString() {
         return "Item{" +

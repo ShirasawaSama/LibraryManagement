@@ -37,7 +37,10 @@ public final class Main {
                             }
                             System.out.println("Success!");
                         }
-                        case 3 -> management.addItem(new Item(in));
+                        case 3 -> {
+                            var item = new Item(in);
+                            management.addItem(item.isBook() ? new Book(item) : new Multimedia(item));
+                        }
                         case 4 -> {
                             System.out.println("Barcode to delete: ");
                             management.removeItem(in.nextLine());

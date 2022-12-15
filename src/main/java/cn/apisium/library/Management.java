@@ -70,7 +70,7 @@ public final class Management {
         loan.setUserId(userId);
         final Date now = new Date();
         loan.setIssueDate(dateFormat.format(now));
-        loan.setDueDate(dateFormat.format(new Date(now.getTime() + WEEK * (item.isBook() ? 4 : 1))));
+        loan.setDueDate(dateFormat.format(new Date(now.getTime() + WEEK * item.getBorrowTime())));
         loans.add(loan);
     }
 
@@ -84,7 +84,7 @@ public final class Management {
         final Loan loan = getLoan(barcode, userId);
         if (loan.getNumRenews() >= 3) throw new IllegalArgumentException("Cannot renew more than 3 times!");
         final Date now = new Date();
-        loan.setDueDate(dateFormat.format(new Date(now.getTime() + WEEK * (items.get(barcode).isBook() ? 2 : 1))));
+        loan.setDueDate(dateFormat.format(new Date(now.getTime() + WEEK * items.get(barcode).getRenewTime())));
         loan.setNumRenews(loan.getNumRenews() + 1);
     }
 
